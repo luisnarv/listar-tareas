@@ -143,17 +143,18 @@ export default function ListaDeTareas() {
             <Create onSubmit={agregarTarea} />
             <div className={style.contenedor}>
                 <div className={style.contenedorInterno}>
-                 
+                 <h2 className={{color: "black"}}  >Filtros</h2>
+                 <br />
                     <Button   onClick={(e) => handleReset(e)} variant="outlined" color="error">Borrar filtros</Button>
                     <br /><br />
                     <div>
-                        <Box sx={{ minWidth: 50 }}>
-                            <FormControl fullWidth>
+                        <Box sx={{ maxWidth: 200 }}>
+                            <FormControl fullWidth sx={{maxWidth: 200 }}   > 
                                 <InputLabel id="demo-simple-select-label">Estado</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
-                                    label="Age"
+                                    label="Estado"
                                     onClick={(e) => handle(e)}
                                     onChange={(e) => { handleEstado(e) }}
                                 >
@@ -164,9 +165,8 @@ export default function ListaDeTareas() {
                         </Box>
                     </div>
         <br />            <div>
-
-                    <Box sx={{ minWidth: 50 }}>
-                            <FormControl fullWidth>
+                    <Box sx={{ maxWidth: 200 }}>
+                            <FormControl fullWidth sx={{maxWidth: 200 }} >
                                 <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -185,7 +185,7 @@ export default function ListaDeTareas() {
                         <Box
                             component="form"
                             sx={{
-                                '& > :not(style)': { m: 1, width: '25ch' },
+                                '& > :not(style)': { m: 1, width: '20ch' },
                             }}
                             noValidate
                             autoComplete="off"
@@ -209,8 +209,6 @@ export default function ListaDeTareas() {
                                     completarTarea={completarTarea}
                                     eliminarTarea={eliminarTarea}
                                     editarTarea={editarTarea}
-
-
                                 />
                             )
                             :
