@@ -5,6 +5,7 @@
     display: flex;
     margin: 5px;
     justify-content: center;
+    border-radius: 5px;
 }
 .sinc{
     margin: 2px;
@@ -17,9 +18,8 @@
 
 .tarea{
     color: black;
-    margin: auto ;
-    margin-bottom: auto;
     margin-top: 10px;
+    padding: 5px;
 }
 .boton{
     position: relative;
@@ -36,4 +36,100 @@
     border-radius: 5px;
     background: rgb(48, 208, 112);
  
+}
+
+
+@media  (max-width: 375px) {
+
+    .container{
+     
+        background-color: #26ea0a4f;
+        text-decoration: line-through;
+        color: rgb(31 33 35);
+        display: flex;
+        margin: 5px;
+        justify-content: center;
+    }
+    .sinc{
+        margin: 2px;
+        border: 2px solid;
+        background-color: #d2d3d7;
+        text-decoration: none;
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    .tarea{
+        color: black;
+        margin: auto ;
+        margin-bottom: auto;
+        margin-top: 10px;
+    }
+    .boton{
+        position: relative;
+        margin: 10px;
+        width: 60px;
+        height: 30px;
+        border-radius: 5px;
+    }
+    .boton2{
+        position: relative;
+        margin: 10px;
+        width: 60px;
+        height: 30px;
+        border-radius: 5px;
+        background: rgb(48, 208, 112);
+     
+    }
+    
+
+
+
+}
+
+
+@media (max-width: 768px) {
+
+    .container{
+     
+        background-color: #26ea0a4f;
+        text-decoration: line-through;
+        color: rgb(31 33 35);
+        display: flex;
+        margin: 5px;
+        justify-content: center;
+    }
+    .sinc{
+        margin: 2px;
+        border: 2px solid;
+        background-color: #d2d3d7;
+        text-decoration: none;
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    .tarea{
+        color: black;
+        margin: auto ;
+        margin-bottom: auto;
+        margin-top: 10px;
+    }
+    .boton{
+        position: relative;
+        margin: 10px;
+        width: 60px;
+        height: 30px;
+        border-radius: 5px;
+    }
+    .boton2{
+        position: relative;
+        margin: 10px;
+        width: 60px;
+        height: 30px;
+        border-radius: 5px;
+        background: rgb(48, 208, 112);
+     
+    }
+    
+
 }
