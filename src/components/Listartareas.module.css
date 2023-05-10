@@ -1,0 +1,38 @@
+.container{
+    background-color: #121113;
+    text-decoration: line-through;
+    color: rgb(255, 255, 255);
+    display: flex;
+    margin: 5px;
+}
+.sinc{
+    margin: 2px;
+    border: 2px solid;
+    background-color: #d2d3d7;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-around;
+}
+
+.tarea{
+    margin: auto ;
+    margin-bottom: auto;
+    margin-top: 10px;
+}
+.boton{
+    position: relative;
+    margin: 10px;
+    width: 60px;
+    height: 30px;
+    border-radius: 5px;
+    background: red;
+}
+.boton2{
+    position: relative;
+    margin: 10px;
+    width: 60px;
+    height: 30px;
+    border-radius: 5px;
+    background: rgb(48, 208, 112);
+ 
+}

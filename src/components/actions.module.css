@@ -1,0 +1,9 @@
+.container{
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 1rem;
+    color: black;
+    margin-top: 10px;
+    flex-direction: column;
+}

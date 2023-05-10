@@ -1,0 +1,26 @@
+.container{
+    background-color: rgba(230, 233, 239, 0.398);
+    color: #000000;
+    display: flex;
+    position: relative;
+    border-radius: 5px;
+    border: 2px solid;
+    justify-content: center;
+}
+
+.buton{
+    padding: 16px;
+    /* font-size: 18px; */
+    margin: 10px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    outline: none;
+    background: #00471b;
+    color: #fff;
+    border-radius: 5px;
+}
+.caja{
+    width: auto;
+    height: auto;
+    
+}
