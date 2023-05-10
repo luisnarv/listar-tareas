@@ -10,8 +10,8 @@ import Modal from '@mui/material/Modal';
 
 
 
-export default function Tareas () {
-   
+export default function Tareas ({ id, texto, completarTarea, eliminarTarea, editarTarea, estado }) {
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -35,7 +35,7 @@ export default function Tareas () {
     };
 
     return (
-        <div className={ style.sinc}>
+        <div className={estado === true ? style.container : style.sinc}>
             <div>
                 <Modal
                     open={open}
@@ -49,21 +49,21 @@ export default function Tareas () {
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <input type="text" value={editinput.textos} onChange={handleInputChange} />
-                        <button>Guardar</button>
+                        <button onClick={() => editarTarea(editinput, id)} >Guardar</button>
                         </Typography>
                     </Box> 
                 </Modal>
             </div>
             <div
-                className={style.tarea}
-                 >
-                <IconButton aria-label="fingerprint" color="success">
-                    <Fingerprint />
-                </IconButton> 
+                    className={style.tarea}
+                    onClick={() => completarTarea(id)} >
+                    <IconButton aria-label="fingerprint" color="success">
+                        <Fingerprint />
+                    </IconButton> {texto}
             </div>
             <div   >
-                <Button type=""  >Eliminar</Button>
-           <Button onClick={handleOpen} >Editar</Button>
+                <Button type="" onClick={() => eliminarTarea(id)} className={style.boton} >Eliminar</Button>
+           <Button onClick={handleOpen}>Editar</Button>
             </div>
         </div>
     );
