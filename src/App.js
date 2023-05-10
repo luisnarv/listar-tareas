@@ -4,9 +4,10 @@ import ListaDeTareas from "./components/actions";
 
 function App() {
   return (
-    <div className='aplicacion-tareas'>
+    <div className='aplicacion-tareas'> 
+     <h1>Mis tareas</h1>
       <div className='tareas'>
-        <h1>Mis tareas</h1>
+      
        <ListaDeTareas /> 
       </div>
     </div>

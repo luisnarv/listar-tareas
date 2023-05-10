@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import { createSignal } from "solid-js"
 import style from "./actions.module.css";
 //import Tareas from "./tareas"
 import Tareas from './Listartareas';
 import Create from './Creartarea';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 
 export default function ListaDeTareas() {
     const [tareasFiltradas, setTareasFiltradas] = useState([]);
@@ -43,10 +51,13 @@ export default function ListaDeTareas() {
         e.preventDefault();
         setSearchValuetName(e.target.value);
     }
+
     function handleEstado(e) {
         e.preventDefault();
         setComple(e.target.value)
     }
+
+
     function handleCategory(e) {
         e.preventDefault();
         setCategor(e.target.value)
@@ -84,7 +95,6 @@ export default function ListaDeTareas() {
     }
     //filtor por nombre
     function Searc(name) {
-
         const filtro = tareas.filter(tarea => tarea.name === name);
         console.log(filtro, "sto es name")
         setTareasFiltradas(filtro)
@@ -92,27 +102,28 @@ export default function ListaDeTareas() {
 
     function estado(id) {
         if (id === "false") {
-            const Actualizadas = tareas.filter(tarea => tarea.estado === false);
+            const Actualizadas = tareas.filter(tarea => tarea.estado === true);
             setTareasFiltradas(Actualizadas);
         } else {
-            const tareasActualizadas = tareas.filter(tarea => tarea.estado === true);
+            const tareasActualizadas = tareas.filter(tarea => tarea.estado === false);
             setTareasFiltradas(tareasActualizadas);
         }
     }
 
-    function category(id) {   
-            const Actualizadas = tareas.filter(tarea => tarea.categoria === id);
-            setTareasFiltradas(Actualizadas);
+    function category(id) {
+        const Actualizadas = tareas.filter(tarea => tarea.categoria === id);
+        setTareasFiltradas(Actualizadas);
     }
+
 
     function handleSubmit(e) {
         e.preventDefault();
         Searc(searchValue);
     }
+
     function handleReset(e) {
         e.preventDefault();
         setTareasFiltradas("")
-
     }
 
 
@@ -130,62 +141,93 @@ export default function ListaDeTareas() {
     return (
         <>
             <Create onSubmit={agregarTarea} />
-            <div className={style.container}>
-                {
-                    // tareas.map((tarea) =>
-                    //     <Tareas
-                    //         key={tarea.id}
-                    //         id={tarea.id}
-                    //         texto={tarea.texto}
-                    //         estado={tarea.estado}
-                    //         completarTarea={completarTarea}
-                    //         eliminarTarea={eliminarTarea}
-                    //         editarTarea={editarTarea}
-                    //      />
-                    // )
-                    tareasFiltradas.length > 0 ?
-                        tareasFiltradas.map((tarea) =>
-                            <Tareas
-                                key={tarea.id}
-                                id={tarea.id}
-                                texto={tarea.texto}
-                                estado={tarea.estado}
-                                completarTarea={completarTarea}
-                                eliminarTarea={eliminarTarea}
-                                editarTarea={editarTarea}
-                            />
-                        )
-                        :
-                        tareas.map((tarea) =>
-                            <Tareas
-                                key={tarea.id}
-                                id={tarea.id}
-                                texto={tarea.texto}
-                                estado={tarea.estado}
-                                completarTarea={completarTarea}
-                                eliminarTarea={eliminarTarea}
-                                editarTarea={editarTarea}
-                            />
-                        )
+            <div className={style.contenedor}>
+                <div className={style.contenedorInterno}>
+                 
+                    <Button   onClick={(e) => handleReset(e)} variant="outlined" color="error">Borrar filtros</Button>
+                    <br /><br />
+                    <div>
+                        <Box sx={{ minWidth: 50 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Estado</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    label="Age"
+                                    onClick={(e) => handle(e)}
+                                    onChange={(e) => { handleEstado(e) }}
+                                >
+                                    <MenuItem value={"false"}>Pendiente</MenuItem>
+                                    <MenuItem value={"true"}>Finalizado</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                    </div>
+        <br />            <div>
 
-                }
-            </div>
-            <button onClick={(e) => handleReset(e)}>Reset</button>
-            <div>
-                <input value={searchValue} onChange={(e) => handleInputChange(e)} type="text" />
-                <button onClick={(e) => handleSubmit(e)} >buscar</button>
-            </div>
-            <div>
-                <select onClick={(e) => handle(e)} onChange={e => handleEstado(e)}>
-                    <option value='false' key='P'>Pendiente</option>
-                    <option value='true' key='F'>Finalizado</option>
-                </select>
-            </div>
-            <div>
-                <select onClick={(e) => handlecatego(e)} onChange={e => handleCategory(e)} >
-                    <option className={style.select} value="" hidden>Filtrar categoria</option>
-                    {categoria.map(e => (<option value={e} name="time">{e}</option>))}
-                </select>
+                    <Box sx={{ minWidth: 50 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    label="Age"
+                                    onClick={(e) => handlecatego(e)}
+                                    onChange={(e) => { handleCategory(e) }}
+                                >
+                                    {categoria.map(e => (<MenuItem value={e} name="time">{e}</MenuItem>))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                    </div>
+                    <br />
+                    <div>
+                        <Box
+                            component="form"
+                            sx={{
+                                '& > :not(style)': { m: 1, width: '25ch' },
+                            }}
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <TextField id="standard-basic" label="Buscar" variant="standard" value={searchValue} onChange={(e) => handleInputChange(e)} type="text" />
+                            {/* <input value={searchValue} onChange={(e) => handleInputChange(e)} type="text" /> */}
+                            <Button onClick={(e) => handleSubmit(e)} >buscar</Button>
+                        </Box>
+                    </div>
+                </div>
+                <div className={style.container}>
+                    {
+                        tareasFiltradas.length > 0 ?
+                            tareasFiltradas.map((tarea) =>
+                                <Tareas
+                                    key={tarea.id}
+                                    id={tarea.id}
+                                    name={tarea.name}
+                                    texto={tarea.texto}
+                                    estado={tarea.estado}
+                                    completarTarea={completarTarea}
+                                    eliminarTarea={eliminarTarea}
+                                    editarTarea={editarTarea}
+
+
+                                />
+                            )
+                            :
+                            tareas.map((tarea) =>
+                                <Tareas
+                                    key={tarea.id}
+                                    id={tarea.id}
+                                    name={tarea.name}
+                                    texto={tarea.texto}
+                                    estado={tarea.estado}
+                                    completarTarea={completarTarea}
+                                    eliminarTarea={eliminarTarea}
+                                    editarTarea={editarTarea}
+                                />
+                            )
+                    }
+                </div>
             </div>
 
         </>

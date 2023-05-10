@@ -27,9 +27,8 @@ h1 {
 
 .aplicacion-tareas {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  flex-direction: column;
 }
 
 
@@ -39,6 +38,6 @@ h1 {
   background-color: #c3c3c4f7;
   padding: 25px;
   margin: 10px;
-  border-radius: 26px;
-  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.548);
+  border-radius: 10px;
+  box-shadow: 10px 10px 55px 25px rgba(0, 0, 0, 0.477);
 }

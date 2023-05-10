@@ -2,15 +2,23 @@
     background-color: rgba(230, 233, 239, 0.398);
     color: #000000;
     display: flex;
-    position: relative;
     border-radius: 5px;
     border: 2px solid;
+    overflow: hidden;
+    height: 10px;
+    transition: 1.5s;
     justify-content: center;
 }
+.container:hover{
+    height: 450px;
+    overflow: none;
+   box-shadow: 5px 10px 20px 10px  rgba(0, 0, 0, 0.322); 
+}  
+
 
 .buton{
+    width: 300px;
     padding: 16px;
-    /* font-size: 18px; */
     margin: 10px;
     border-radius: 0 4px 4px 0;
     cursor: pointer;
@@ -21,6 +29,20 @@
 }
 .caja{
     width: auto;
+    display: flex;
+    margin-top: 5px;
     height: auto;
-    
+    flex-direction: column;
 }
+
+
+/* .articulo{
+    width: 280px;
+    margin: auto;
+    margin-bottom: 5px;
+    background: #3b3b3b;
+    border-radius: 5px;
+    padding: 10px;
+    transition: all 1s;
+} */
+
