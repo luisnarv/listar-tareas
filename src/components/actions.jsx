@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import { createSignal } from "solid-js"
 import style from "./actions.module.css";
 //import Tareas from "./tareas"
@@ -11,9 +12,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import {agregartareas, editartarea, eliminartarea, completartarea, filtrarcategoria, filtrarestado} from "../actions/index"
 
 
 export default function ListaDeTareas() {
+    const dispatch = useDispatch()
     const [tareasFiltradas, setTareasFiltradas] = useState([]);
     const [tareas, setTareas] = useState(() => {
 
@@ -22,7 +25,7 @@ export default function ListaDeTareas() {
         return savedTasks !== null ? JSON.parse(savedTasks) : [""]
     });
 
-    console.log(tareas)
+
 
 
     const [Treas, setTreas] = useState(() => {
@@ -54,12 +57,14 @@ export default function ListaDeTareas() {
 
     function handleEstado(e) {
         e.preventDefault();
+        //dispatch(filtrarestado(e.target.value))
         setComple(e.target.value)
     }
 
 
     function handleCategory(e) {
         e.preventDefault();
+        //dispatch(filtrarcategoria(e.target.value))
         setCategor(e.target.value)
     }
 
@@ -69,6 +74,7 @@ export default function ListaDeTareas() {
             const tareasActualizadas = [tarea, ...tareas];
             setTareas(tareasActualizadas);
             setTreas(tareasActualizadas)
+            agregartareas(tareasActualizadas)
         }
     }
     const editarTarea = (editinput, id) => {
@@ -79,7 +85,9 @@ export default function ListaDeTareas() {
         } setTareas([...tareas]);
     }
     const eliminarTarea = id => {
+      
         const tareasActualizadas = tareas.filter(tarea => tarea.id !== id);
+        
         setTareas(tareasActualizadas);
         setTreas(tareasActualizadas);
     }
@@ -96,7 +104,7 @@ export default function ListaDeTareas() {
     //filtor por nombre
     function Searc(name) {
         const filtro = tareas.filter(tarea => tarea.name === name);
-        console.log(filtro, "sto es name")
+       
         setTareasFiltradas(filtro)
     }
 
@@ -119,11 +127,13 @@ export default function ListaDeTareas() {
     function handleSubmit(e) {
         e.preventDefault();
         Searc(searchValue);
+        setSearchValuetName("")
+
     }
 
     function handleReset(e) {
         e.preventDefault();
-        setTareasFiltradas("")
+        setTareasFiltradas(tareas)
     }
 
 
@@ -198,31 +208,34 @@ export default function ListaDeTareas() {
                 </div>
                 <div className={style.container}>
                     {
-                        tareasFiltradas.length > 0 ?
-                            tareasFiltradas.map((tarea) =>
-                                <Tareas
-                                    key={tarea.id}
-                                    id={tarea.id}
-                                    name={tarea.name}
-                                    texto={tarea.texto}
-                                    estado={tarea.estado}
-                                    completarTarea={completarTarea}
-                                    eliminarTarea={eliminarTarea}
-                                    editarTarea={editarTarea}
-                                />
+                        tareasFiltradas.length <=0 ?
+                            // tareasFiltradas.map((tarea) =>
+
+                            tareas.map((tarea) =>
+                            <Tareas
+                                key={tarea.id}
+                                id={tarea.id}
+                                name={tarea.name}
+                                texto={tarea.texto}
+                                estado={tarea.estado}
+                                completarTarea={completarTarea}
+                                eliminarTarea={eliminarTarea}
+                                editarTarea={editarTarea}
+                            />
                             )
                             :
-                            tareas.map((tarea) =>
-                                <Tareas
-                                    key={tarea.id}
-                                    id={tarea.id}
-                                    name={tarea.name}
-                                    texto={tarea.texto}
-                                    estado={tarea.estado}
-                                    completarTarea={completarTarea}
-                                    eliminarTarea={eliminarTarea}
-                                    editarTarea={editarTarea}
-                                />
+                            tareasFiltradas.map((tarea) =>
+                            <Tareas
+                            key={tarea.id}
+                            id={tarea.id}
+                            name={tarea.name}
+                            texto={tarea.texto}
+                            estado={tarea.estado}
+                            completarTarea={completarTarea}
+                            eliminarTarea={eliminarTarea}
+                            editarTarea={editarTarea}
+                        />
+                          
                             )
                     }
                 </div>
