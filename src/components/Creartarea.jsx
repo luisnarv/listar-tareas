@@ -47,7 +47,7 @@ export default function Create(props) {
       ...input, [e.target.name]: e.target.value
     }))
   }
-console.log(input.categoria)
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -59,7 +59,12 @@ console.log(input.categoria)
       categoria: input.categoria
     }
     props.onSubmit(tareaNueva)
-    setInput("")
+    setInput({
+      name: "",
+      text: "",
+      categoria: ""
+
+    })
   }
   const categoria = ["Prioridad alta", "Prioridad media", "Prioridad baja"];
 
