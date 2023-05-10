@@ -6,6 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 import Icon from '@mui/material/Icon';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
 
 
 
@@ -85,8 +90,9 @@ console.log(input.categoria)
   const categoria = ["Prioridad alta", "Prioridad media", "Prioridad baja"];
 
   return (
-    <div className={style.container}>
-      <Box
+ 
+ <div className={style.container}>
+      {/* <Box
         className={style.caja}
         component="form"
         onSubmit={handleSubmit}
@@ -126,10 +132,63 @@ console.log(input.categoria)
         />
 
         <Icon baseClassName="fas" className="fa-plus-circle" />
-        <button className={style.buton} type='submit'> crear </button>
+        {mostrarBoton ? (<Button className={style.buton} type='submit' color="success" > Crear </Button>) :<Button disabled>Crear</Button>}
 
-        {mostrarBoton ? (<Button style={{ margin: "10px", width: "100px", }} type='submit' class="btn btn-outline-success">  Publicar  </Button>) : <Button disabled>Disabled</Button>}
-      </Box>
+      </Box> */}
+
+      <Card sx={{ backgroundColor:"#d2d3d7" }}>
+       <Box
+        className={style.caja}
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '40ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+        <h2>Crear Tarea</h2>
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+        <TextField
+          onChange={(e) => handleInputChange(e)}
+          value={input.name}
+          name="name"
+          id="outlined-required"
+          label="Nombre"
+        /> <br /> <br />
+        <TextField
+          onChange={(e) => handleInputChange(e)}
+          value={input.text}
+          name="text"
+          id="outlined-required"
+          label="Nueva nota"
+        />
+         <br /> <br />
+        <Autocomplete
+          disablePortal
+          name="categoria"
+          id="combo-box-demo"
+          options={categoria}
+          sx={{ width: 300 }}
+          onChange={(event, value) => handleInputChange({ target: { name: "categoria", value } })}
+          value={input.categoria}
+          renderInput={(params) => <TextField   
+          name="categoria"
+          id="outlined-required"
+           {...params}
+          label="Categoria" />}
+        />
+        </Typography>
+      </CardContent>
+      <CardActions>
+      {mostrarBoton ? (<Button className={style.buton} type='submit' color="success" > Crear </Button>) :<Button style={{width:"300px"}} disabled>Crear</Button>}
+      </CardActions>
+      </Box> 
+    </Card>
     </div>
+
   )
 }
