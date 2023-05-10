@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 
 export default function Tareas({ id, name, texto, completarTarea, eliminarTarea, editarTarea, estado }) {
@@ -60,12 +61,16 @@ export default function Tareas({ id, name, texto, completarTarea, eliminarTarea,
                 <div
                     className={style.tarea}
                     onClick={() => completarTarea(id)} >
-                    <p>Nombre:{name}</p> <p>Tarea: {texto}</p>
+                    <p>Nombre: {name}</p> <p>Nota: {texto}</p>
                 </div>
-                <div   >
+                <div>
+                <IconButton aria-label="fingerprint" color="secondary">
                     <Button type="" onClick={() => eliminarTarea(id)} className={style.boton} >Eliminar</Button>
-                    <IconButton aria-label="fingerprint" color="success">
-                <Button onClick={handleOpen}>Editar</Button><ModeEditIcon color="action" />
+                   <DeleteForeverIcon /> 
+                </IconButton> 
+                <IconButton aria-label="fingerprint" color="primary" fontSize="small" >
+                <Button onClick={handleOpen} className={style.boton} >Editar</Button>
+                <ModeEditIcon />
             </IconButton>  
                 </div>
             </div>

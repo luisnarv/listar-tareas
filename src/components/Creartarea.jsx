@@ -3,39 +3,13 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import style from "./Creartarea.module.css"
 import { v4 as uuidv4 } from 'uuid';
-import Icon from '@mui/material/Icon';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import {Validate} from "./valida"
 import Typography from '@mui/material/Typography';
-
-
-
-
-
-function valida(input) {
-
-  let errors = {}
-  if (!input.name) {
-    errors.name = "El comentario no puede estar vacío";
-  } else if (input.name.length <= 16 || input.name.length === 1) {
-    errors.name = "El comentario debe ser de más de 16 caracteres";
-  }
-  if (!input.text) {
-    errors.text = "El comentario no puede estar vacío";
-  } else if (input.text.length <= 16 || input.text.length === 1) {
-    errors.text = "El comentario debe ser de más de 16 caracteres";
-  }
-  if (!input.categoria) {
-    errors.categoria = "El comentario no puede estar vacío";
-  } else if (input.categoria.length <= 16 || input.categoria.length === 1) {
-    errors.categoria = "El comentario debe ser de más de 16 caracteres";
-  }
-  return errors
-}
 
 
 export default function Create(props) {
@@ -46,22 +20,22 @@ export default function Create(props) {
     categoria: ""
   })
 
-  console.log(mostrarBoton)
   const [errors, setErrors] = useState({
     name: "",
     text: "",
     categoria: ""
   });
 
-  useEffect(() => {
+  useEffect(() => { 
+     if (!errors.name && !errors.text && !errors.categoria) {
+      setMostrarBoton(true)
+    }
     if (input.name && input.text && input.categoria) {
       setMostrarBoton(true);
     } else if (errors) {
       setMostrarBoton(false);
     }
-    if (!errors.name && !errors.text && !errors.categoria) {
-      setMostrarBoton(false)
-    }
+  
   }, [errors, input]);
 
 
@@ -69,7 +43,7 @@ export default function Create(props) {
     setInput({
       ...input, [e.target.name]: e.target.value
     })
-    setErrors(valida({
+    setErrors(Validate({
       ...input, [e.target.name]: e.target.value
     }))
   }
@@ -92,57 +66,13 @@ console.log(input.categoria)
   return (
  
  <div className={style.container}>
-      {/* <Box
+      <Card item sx={{ backgroundColor:"#d2d3d7" }}>
+       <Box 
         className={style.caja}
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          '& .MuiTextField-root': { m: 1, width: '40ch' },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          onChange={(e) => handleInputChange(e)}
-          value={input.name}
-          name="name"
-          id="outlined-required"
-          label="Nombre"
-        />
-        <TextField
-          onChange={(e) => handleInputChange(e)}
-          value={input.text}
-          name="text"
-          id="outlined-required"
-          label="Nueva nota"
-        />
-        <Autocomplete
-          disablePortal
-          name="categoria"
-          id="combo-box-demo"
-          options={categoria}
-          sx={{ width: 300 }}
-          onChange={(event, value) => handleInputChange({ target: { name: "categoria", value } })}
-          value={input.categoria}
-          renderInput={(params) => <TextField   
-          name="categoria"
-          id="outlined-required"
-           {...params}
-          label="Categoria" />}
-        />
-
-        <Icon baseClassName="fas" className="fa-plus-circle" />
-        {mostrarBoton ? (<Button className={style.buton} type='submit' color="success" > Crear </Button>) :<Button disabled>Crear</Button>}
-
-      </Box> */}
-
-      <Card sx={{ backgroundColor:"#d2d3d7" }}>
-       <Box
-        className={style.caja}
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          '& .MuiTextField-root': { m: 1, width: '40ch' },
+          '& .MuiTextField-root': { m:1, width: '20ch' },
         }}
         noValidate
         autoComplete="off"
@@ -157,37 +87,39 @@ console.log(input.categoria)
           value={input.name}
           name="name"
           id="outlined-required"
-          label="Nombre"
-        /> <br /> <br />
+          label="Nombre *"
+        /> {errors.name && ( <p className={style.error}>{errors.name}</p>)} 
+        <br /> 
         <TextField
           onChange={(e) => handleInputChange(e)}
           value={input.text}
           name="text"
           id="outlined-required"
-          label="Nueva nota"
-        />
-         <br /> <br />
+          label="Nueva nota *"
+        />{errors.text && ( <p className={style.error}>{errors.text}</p>)} 
+         <br />
         <Autocomplete
           disablePortal
           name="categoria"
           id="combo-box-demo"
           options={categoria}
-          sx={{ width: 300 }}
+          sx={{ width:200 }}
           onChange={(event, value) => handleInputChange({ target: { name: "categoria", value } })}
           value={input.categoria}
           renderInput={(params) => <TextField   
           name="categoria"
           id="outlined-required"
            {...params}
-          label="Categoria" />}
-        />
+          label="Categoria *" />}
+        />{errors.categoria && ( <p className={style.error}>{errors.categoria}</p>)} 
         </Typography>
       </CardContent>
       <CardActions>
-      {mostrarBoton ? (<Button className={style.buton} type='submit' color="success" > Crear </Button>) :<Button style={{width:"300px"}} disabled>Crear</Button>}
+      {mostrarBoton ? (<Button className={style.buton} type='submit' color="success" > Crear </Button>) :<Button style={{width:"300px", display:"flex", flexDirection:"column", alignItems:"center" }} disabled>Crear</Button>}
       </CardActions>
       </Box> 
     </Card>
+    
     </div>
 
   )

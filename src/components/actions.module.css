@@ -1,4 +1,4 @@
-.container{
+.container {
     display: flex;
     color: #c5c5c6;
     padding: 10px;
@@ -7,15 +7,12 @@
     background: currentColor;
     border-radius: inherit;
     min-height: 100px;
-    align-items: stretch;  
-    
+    align-items: stretch;
+
 }
 
-
-
-.contenedor{
+.contenedor {
     background: #c5c5c6;
-    max-width: 1100px;
     margin: auto;
     margin-top: 25px;
     margin-bottom: 25px;
@@ -23,7 +20,7 @@
     border-radius: 5px;
 }
 
-.contenedorInterno{
+.contenedorInterno {
     width: 250px;
     flex-grow: 1;
     background: rgba(173, 171, 171, 0.575);
@@ -31,4 +28,52 @@
     border-radius: 5px;
     min-width: 300px;
     max-height: 400px;
+}
+
+
+
+/*----- IPAD --------*/
+@media (max-width: 768px) {
+    .contenedor {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+.contenedorInterno {
+    width: 80%;
+    background: rgba(173, 171, 171, 0.575);
+    }
+
+    .container {
+    border-radius: inherit;
+    color: #c5c5c6;
+    width: 95%;
+    }
+}
+
+
+
+
+/*----------- Movil -------------*/
+
+@media (max-width: 375px) {
+    .contenedor {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+.contenedorInterno {
+    width: 80%;
+    background: rgba(173, 171, 171, 0.575);
+    }
+
+    .container {
+    border-radius: inherit;
+    color: #c5c5c6;
+    width: 95%;
+    }
+
+
 }
