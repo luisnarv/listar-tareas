@@ -40,7 +40,7 @@ export default function Tareas({ id, name, texto, completarTarea, eliminarTarea,
     return (
         <div className={estado === true ? style.container : style.sinc}>
             <div>
-                <div>
+                 <div>
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -56,24 +56,22 @@ export default function Tareas({ id, name, texto, completarTarea, eliminarTarea,
                                 <Button onClick={(e)=> {editarTarea(editinput, id); handleClose(e)} } > Guardar</Button>
                             </Typography>
                         </Box>
-                    </Modal>
+                    </Modal> 
                 </div>
-                <div
+                  <div
                     className={style.tarea}
                     onClick={() => completarTarea(id)} >
                     <p>Nombre: {name}</p> <p>Nota: {texto}</p>
-                </div>
-                <div>
-                <IconButton aria-label="fingerprint" color="secondary">
-                    <Button type="" onClick={() => eliminarTarea(id)} className={style.boton} >Eliminar</Button>
-                   <DeleteForeverIcon /> 
+                </div>  
+                  <div>
+                <IconButton onClick={() => eliminarTarea(id)} aria-label="fingerprint" color="secondary">
+                   <DeleteForeverIcon />  <p>Eliminar</p>
                 </IconButton> 
-                <IconButton aria-label="fingerprint" color="primary" fontSize="small" >
-                <Button onClick={handleOpen} className={style.boton} >Editar</Button>
-                <ModeEditIcon />
+                 <IconButton onClick={handleOpen} aria-label="fingerprint" color="primary" fontSize="small" >
+                <ModeEditIcon />  <p  >Editar</p>
             </IconButton>  
-                </div>
-            </div>
+                </div>  
+            </div> 
         </div>
     );
 }
