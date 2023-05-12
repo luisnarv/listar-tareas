@@ -28,7 +28,8 @@
     outline: none;
     background: #00471b;
     color: #fff;
-    border-radius: 5px;
+    border-radius: 5px; 
+
 }
 .caja{
     width: auto;
@@ -40,7 +41,7 @@
 
 .error{
     color: red;
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 

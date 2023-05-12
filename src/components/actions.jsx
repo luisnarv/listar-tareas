@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { createSignal } from "solid-js"
 import style from "./actions.module.css";
-import Autocomplete from '@mui/material/Autocomplete';
-//import Tareas from "./tareas"
 import Tareas from './Listartareas';
 import Create from './Creartarea';
 import Box from '@mui/material/Box';
@@ -13,33 +10,44 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { agregartareas, editarT, eliminar, complet, filtrarC, filtrarestado, filtranombre } from "../actions/index"
+import { Agregas, agregartareas, editarT, eliminar, complet, filtrarC, filtrarestado, filtranombre } from "../actions/index"
+
+
 
 
 export default function ListaDeTareas() {
+
+
     const dispatch = useDispatch()
-    const allnotas = useSelector((state) => state.alltareas)
-    var allfiltro = useSelector((state) => state.allfiltro)
-   
-
+    const [show, setshow] = useState(false)
     const [tareas, setTareas] = useState([])
-
-    const [tareasFiltradas, setTareasFiltradas] = useState([]);
-
-
-    useEffect(() => {
-        dispatch(agregartareas(tareas));
-    }, [dispatch, tareas])
-
-
-    useEffect(() => {
-        localStorage.setItem('tareas', JSON.stringify(tareas));
-    }, [tareas]);
-
-
     const [searchValue, setSearchValuetName] = useState("")
     const [comlple, setComple] = useState([])
-    const [cate, setcate] = useState([]);
+    const[ storedData, setstoreData] = useState()
+
+
+//localstorage
+// useEffect(() => {
+//     const stodData = localStorage.getItem('tareas');
+//      if (stodData) {
+//        dispatch(Agregas(JSON.parse(stodData))) ;
+//      }
+//   }, [storedData]);
+
+
+//   useEffect(() => {
+//     localStorage.setItem('tareas', JSON.stringify(tareas));
+//    // localStorage.setItem('tareas', JSON.stringify(comlple));
+//   }, [tareas]);
+
+
+
+  ////**************************************************** */
+
+
+
+    const allnotas = useSelector((state) => state.alltareas)
+    var allfiltro = useSelector((state) => state.allfiltro)
 
     function handleInputChange(e) {
         e.preventDefault();
@@ -48,18 +56,17 @@ export default function ListaDeTareas() {
 
     //--------------------------------------------------------------------   
     function handleEstado(e) {
-        
-        setComple(e.target.value)
+   
         dispatch(filtrarestado(e.target.value))
+        setshow(true)
     }
-
     //--------------------------------------------------------------------   
     function handleCategory(e) {
+    
         e.preventDefault();
-        setcate(e.target.value)
         dispatch(filtrarC(e.target.value))
+        setshow(true)
     }
-
     //--------------------------------------------------------------------   
     const agregarTarea = tarea => {
         if (tarea.texto.trim()) {
@@ -67,48 +74,56 @@ export default function ListaDeTareas() {
             const tareasActualizadas = [tarea, ...tareas];
             setTareas(tareasActualizadas);
             dispatch(agregartareas(tareasActualizadas))
+            setComple("")
         }
     }
-
+    //--------------------------------------------------------------------
     const editarTarea = (editinput, id) => {
         dispatch(editarT(editinput, id))
     }
-
+    //--------------------------------------------------------------------
     const eliminarTarea = id => {
         dispatch(eliminar(id))
+        setshow(true)
     }
+    //--------------------------------------------------------------------
     const completarTarea = id => {
         dispatch(complet(id))
-    }
-
+        // const tareasActualizadas = tareas.map(tarea => {
+        //     if (tarea.id === id) {
+        //       tarea.completada = !tarea.completada;
+        //     }
+        //     return tarea;
+        //   });
+         // setComple(tareasActualizadas);//***********
+        }
+    
     //--------------------------------------------------------------------   
-    function handleSubmit(e) {
+    function handleBuscar(e) {
         e.preventDefault();
         setSearchValuetName("")
         dispatch(filtranombre(searchValue))
+        setshow(true)
     }
-
     //--------------------------------------------------------------------   
     function handleReset(e) {
         e.preventDefault();
-        setTareasFiltradas(tareas)
-        dispatch(agregartareas(tareas))
-        dispatch(filtrarestado(e.target.value))
+        setTareas(allnotas)
+        setshow(false)
     }
 
     const categoria = ["Prioridad alta", "Prioridad media", "Prioridad baja"];
-    const estado = ["Finalizado", "Pendiente"];
+    const estado = ["Finalizado", "Pendiente",];
 
     return (
         <>
-             <Create onSubmit={agregarTarea} /> 
+            <Create onSubmit={agregarTarea} />
             <div className={style.contenedor}>
                 <div className={style.contenedorInterno}>
                     <h2 className={{ color: "black" }}  >Filtros</h2>
                     <br />
                     <Button onClick={(e) => handleReset(e)} variant="outlined" color="error">Borrar filtros</Button>
                     <br /><br />
-
                     <div>
                         <FormControl variant="outlined" component="form" fullWidth sx={{ maxWidth: 200 }}   >
 
@@ -138,7 +153,7 @@ export default function ListaDeTareas() {
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
                                     label="Age"
-                                    value={cate}
+                                    value={comlple}
                                     onChange={(e) => { handleCategory(e) }}
                                 >
                                     <MenuItem value="">
@@ -162,15 +177,34 @@ export default function ListaDeTareas() {
                             autoComplete="off"
                         >
                             <TextField id="standard-basic" label="Buscar" variant="standard" value={searchValue} onChange={(e) => handleInputChange(e)} type="text" />
-                            <Button onClick={(e) => handleSubmit(e)} >buscar</Button>
+                            <Button onClick={(e) => handleBuscar(e)} >buscar</Button>
                         </Box>
                     </div>
                 </div>
                 <div className={style.container}>
-                    {allfiltro[0].id ? allfiltro.map((country) => {
-                        return (
-                            <div >
-                                <div >
+
+                    {allfiltro.length > 0 && show === true ?
+                        allfiltro.map((country, index) => {
+                            return (
+                                <Tareas
+                                    key={country.id}
+                                    id={country.id}
+                                    name={country.name}
+                                    texto={country.texto}
+                                    estado={country.estado}
+                                    completarTarea={completarTarea}
+                                    eliminarTarea={eliminarTarea}
+                                    editarTarea={editarTarea}
+                                />
+                            )
+                        }
+                        ) : allfiltro.length === 0 && show === true ? (
+                            <p style={{ fontSize: "10px", color: "red" }}>No se encontró nada</p>
+
+                        ) : (
+                            allnotas.map((country, index) => {
+                                return (
+
                                     <Tareas
                                         key={country.id}
                                         id={country.id}
@@ -181,31 +215,13 @@ export default function ListaDeTareas() {
                                         eliminarTarea={eliminarTarea}
                                         editarTarea={editarTarea}
                                     />
-                                </div>
-                            </div>
-                        );
-                    }) : allnotas.map((country, index) => {
-                        return (
-                            <div >
-                                <div >
-                                    <Tareas
-                                        key={index}
-                                        id={country.id}
-                                        name={country.name}
-                                        texto={country.texto}
-                                        estado={country.estado}
-                                        completarTarea={completarTarea}
-                                        eliminarTarea={eliminarTarea}
-                                        editarTarea={editarTarea}
-                                    />
-                                </div>
-                            </div>
-                        );
-                    })
+                                )
+                            }))
                     }
                 </div>
             </div>
-
         </>
     );
 }
+
+

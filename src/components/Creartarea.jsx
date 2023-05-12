@@ -62,7 +62,7 @@ export default function Create(props) {
     setInput({
       name: "",
       text: "",
-      categoria: ""
+      categoria: input.categoria
     })
   }
   const categoria = ["Prioridad alta", "Prioridad media", "Prioridad baja"];
@@ -85,17 +85,17 @@ export default function Create(props) {
              <Typography  gutterBottom variant="h5" component="div">
               <h2>Crear Tarea</h2>
             </Typography> 
-              <div>
+               <div>
                 <TextField
                 onChange={(e) => handleInputChange(e)}
                 value={input.name}
                 name="name"
                 id="outlined-required"
                 label="Nombre *"
-              />    {errors.name && (<h1 className={style.error}>{errors.name}</h1>)}  </div>
+              />    {errors.name && (<h1 className={style.error}>{errors.name}</h1>)}  </div> 
             
               <br />
-              <div><TextField
+               <div><TextField
                 onChange={(e) => handleInputChange(e)}
                 value={input.text}
                 name="text"
@@ -104,8 +104,7 @@ export default function Create(props) {
               />{errors.text && (<p className={style.error}>{errors.text}</p>)}</div>
                
               <br /> 
-              <div>
-                <Autocomplete
+              <div> <Autocomplete
                 disablePortal
                 name="categoria"
                 id="combo-box-demo"
@@ -120,7 +119,8 @@ export default function Create(props) {
                   {...params}
                   label="Categoria *" />
                 }
-              />{errors.categoria && (<p className={style.error}>{errors.categoria}</p>)} 
+              /> 
+              {errors.categoria && (<p className={style.error}>{errors.categoria}</p>)} 
               </div>
          </CardContent> 
            <CardActions>
