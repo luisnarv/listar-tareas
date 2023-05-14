@@ -1,139 +1,170 @@
 
 const initialState = {
+  lst: JSON.parse(localStorage.getItem('tareas')),
   alltareas: [],
-  allfiltro:[],
-  
+  allfiltro: [],
   tareas: [],
   filtroNombre: '',
   filtroEstado: [],
   filtroCategoria: [],
+  contador: 1
 };
 
 function rootReducer(state = initialState, action) {
   switch (action.type) {
-    //completado  
-    case 'AGREGAR_NOTAS':
-    
-      const guardar = state.alltareas
-      const notas = action.payload
-         for (let i = 0; i <= notas - 1; i++) {
-       guardar[i].texto = notas[i].itextod
-       guardar[i].name = notas[i].name
-       guardar[i].id = notas[i].id
-       guardar[i].estado = notas[i].estado
-       guardar[i].categoria = notas[i].categoria
-       }
-       return {
-        ...state,
-        alltareas: [...guardar]
-      }
-
-      // return {
-      //   ...state,
-      //   alltareas: action.payload,
-      //   filtroNombre: action.payload,
-      //   filtroEstado: action.payload,
-      //   filtroCategoria: action.payload,
-      //   tareas: action.payload,
-      // // tareas: [...state.tareas, action.payload],
-      // };
-    
-
+    /*------------------------Agreagar_tarea---------------------- */
     case 'AGREGAR_TAREA':
-   
+      if (state.contador === 1) {
+        { state.alltareas = state.lst }
+      }
+      const Notas = [...state.alltareas, action.payload]
+      state.contador = 3
+      localStorage.setItem('tareas', JSON.stringify(Notas))
       return {
         ...state,
-        alltareas: action.payload,
-        filtroNombre: action.payload,
-        filtroEstado: action.payload,
-        filtroCategoria: action.payload,
-        tareas: action.payload,
-      // tareas: [...state.tareas, action.payload],
-      };
+        alltareas: [...state.alltareas, action.payload],
+        allfiltro: [...state.alltareas, action.payload],
+        filtroNombre: [...state.alltareas, action.payload],
+        filtroEstado: [...state.alltareas, action.payload],
+        filtroCategoria: [...state.alltareas, action.payload],
+        tareas: [...state.alltareas, action.payload],
+      }
 
-    //completo
+    /*-------------Editar_Tarea------------------------ */
     case 'EDITAR_TAREA':
       const ideditar = state.tareas
+      const idlocal = state.lst
       const ediinput = action.payload
-      for (let i = 0; i <= ideditar.length - 1; i++) {
-        if (ideditar[i].id === ediinput.id) {
-          ideditar[i].texto = ediinput.editinput
+
+      if (state.alltareas.length > 0) {
+        for (let i = 0; i <= ideditar.length - 1; i++) {
+          if (ideditar[i].id === ediinput.id) {
+            ideditar[i].texto = ediinput.editinput
+          }
+        }
+        localStorage.setItem('tareas', JSON.stringify([...ideditar]));
+        return {
+          ...state,
+          lst: [...ideditar],
+          alltareas: [...ideditar],
+          allfiltro: [...ideditar],
+        }
+      } else {
+        for (let i = 0; i <= idlocal.length - 1; i++) {
+          if (idlocal[i].id === ediinput.id) {
+            idlocal[i].texto = ediinput.editinput
+          }
+        }
+        localStorage.setItem('tareas', JSON.stringify([...idlocal]));
+        return {
+          ...state,
+          lst: [...idlocal],
+          alltareas: [...idlocal],
+          allfiltro: [...idlocal],
         }
       }
-      // return {
-      //   ...state,
-      //   alltareas: ideditar
-      // };
-      return {
-        ...state,
-        alltareas: [...ideditar]
-      }
-
-    //completado
+    /*-------------------Eliminar_Tarea------------------------ */
     case 'ELIMINAR_TAREA':
       const idtarea = action.payload
-      const eliminartarea = state.alltareas.filter(tarea => tarea.id !== idtarea);
-      return {
-        ...state,
-        alltareas: eliminartarea, allfiltro: [...eliminartarea]
+      if (state.alltareas.length > 0) {
+        const eliminartarea = state.alltareas.filter(tarea => tarea.id !== idtarea);
+        localStorage.setItem('tareas', JSON.stringify(eliminartarea));
+        return {
+          ...state,
+          lst: [...eliminartarea],
+          alltareas: [...eliminartarea],
+          allfiltro: [...eliminartarea]
+        }
+      } else {
+        const eliminartarea = state.lst.filter(tarea => tarea.id !== idtarea)
+        return {
+          ...state,
+          alltareas: eliminartarea,
+          lst: eliminartarea
+        }
       }
-      // {
-      //   ...state, allfiltro:[...eliminartarea]
-      // }
-    
-      
-
-    //completado    
+    /*----------------Tarea_Completada---------------- */
     case 'COMPLETAR_TAREA':
       const id = action.payload
-      const tareasActualizadas = state.alltareas.map(tarea => {
-        if (tarea.id === id) {
-          tarea.estado = !tarea.estado;
+      if (state.alltareas.length > 0) {
+        const tareasActualizadas = state.alltareas.map(tarea => {
+          if (tarea.id === id) {
+            tarea.estado = !tarea.estado;
+          }
+          return tarea;
+        })
+        localStorage.setItem('tareas', JSON.stringify(tareasActualizadas));
+        return {
+          ...state,
+          alltareas: tareasActualizadas,
+        };
+      } else {
+        const tareasActualizadas = state.lst.map(tarea => {
+          if (tarea.id === id) {
+            tarea.estado = !tarea.estado;
+          }
+          return tarea;
+        })
+        localStorage.setItem('tareas', JSON.stringify(tareasActualizadas));
+        return {
+          ...state,
+          alltareas: tareasActualizadas,
+          lst: tareasActualizadas
         }
-        return tarea;
-      })
-      return {
-        ...state,
-        alltareas: tareasActualizadas,
-      };
-
-
-//completo
+      }
+    /*--------------Filtro_Nombre--------------------- */
     case 'SET_FILTRO_NOMBRE':
-      const nombre = action.payload.toUpperCase()   
-    if(state.filtroNombre <= 0)  return { ...state, alltareas: [...state.tareas],}
+      const nombre = action.payload.toUpperCase()
+      if (state.alltareas.length > 0) {
         const buscar = state.filtroNombre.filter(tarea => tarea.name === nombre)
-          return {
-            ...state,
-            allfiltro: buscar,
-       // if (buscar) { return {...state,alltareas: buscar,
+        return {
+          ...state,
+          allfiltro: buscar,
         }
-       // break;
+      } else {
+        const buscar = state.lst.filter(tarea => tarea.name === nombre)
+        return {
+          ...state,
+          allfiltro: buscar,
+        }
+      }
 
-//complet
+    /*-----------------Filtro_Estado--------------------------------- */
     case 'SET_FILTRO_ESTADO':
       const filtroestado = state.alltareas
       let payload = action.payload
-      payload === "Finalizado"? payload = true: payload = false
-     const filtro = filtroestado.filter(tarea => tarea.estado === payload)
-    
-    //  const filtro = action.payload === false ?
-    //   filtroestado.filter(tarea => tarea.estado === false) :
-    //    filtroestado.filter(tarea => tarea.estado === true)
-      return {
-        ...state,
-        allfiltro: filtro,
-      };
-
-//completado
+      payload === "Finalizado" ? payload = true : payload = false
+      const filtroLocal = state.lst
+      if (state.alltareas.length > 0) {
+        const filtro = filtroestado.filter(tarea => tarea.estado === payload)
+        return {
+          ...state,
+          allfiltro: filtro,
+        };
+      } else {
+        const filtro = filtroLocal.filter(tarea => tarea.estado === payload)
+        return {
+          ...state,
+          allfiltro: filtro,
+        };
+      }
+    /*---------------------Filtro_Categoria----------------------- */
     case 'SET_FILTRO_CATEGORIA':
-    //   const filtrcat = [...state.filtroCategoria]
-      const filtrcat = state.alltareas
-      const filtrC = filtrcat.filter(tarea => tarea.categoria === action.payload);
-      return {
-        ...state,
-        allfiltro: filtrC,
-      };
+      if (state.alltareas.length > 0) {
+        const filtrcat = state.alltareas
+        const filtrC = filtrcat.filter(tarea => tarea.categoria === action.payload);
+        return {
+          ...state,
+          allfiltro: filtrC,
+        };
+      } else {
+        const filtrcat = state.lst
+        const filtrC = filtrcat.filter(tarea => tarea.categoria === action.payload);
+        return {
+          ...state,
+          allfiltro: filtrC,
+        };
+      }
 
     default:
       return state;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import style from "./actions.module.css";
 import Tareas from './Listartareas';
@@ -10,94 +10,57 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { Agregas, agregartareas, editarT, eliminar, complet, filtrarC, filtrarestado, filtranombre } from "../actions/index"
+import { agregartareas, editarT, eliminar, complet, filtrarC, filtrarestado, filtranombre } from "../actions/index"
 
-
+// const [tareas, setTareas] = useState([{
+//     id: "c2026c24-63c7-4c4d-be97-3118ad628537",
+//      name: "DSDSDSD", 
+//      texto: "qqq",
+//       estado: false
+// }])
 
 
 export default function ListaDeTareas() {
-
-
     const dispatch = useDispatch()
     const [show, setshow] = useState(false)
-    const [tareas, setTareas] = useState([])
     const [searchValue, setSearchValuetName] = useState("")
     const [comlple, setComple] = useState([])
-    const[ storedData, setstoreData] = useState()
-
-
-//localstorage
-// useEffect(() => {
-//     const stodData = localStorage.getItem('tareas');
-//      if (stodData) {
-//        dispatch(Agregas(JSON.parse(stodData))) ;
-//      }
-//   }, [storedData]);
-
-
-//   useEffect(() => {
-//     localStorage.setItem('tareas', JSON.stringify(tareas));
-//    // localStorage.setItem('tareas', JSON.stringify(comlple));
-//   }, [tareas]);
-
-
-
-  ////**************************************************** */
-
-
-
+   
+    //----------------1------------------
+    const agregarTarea = tarea => {
+        dispatch(agregartareas(tarea));
+    }
     const allnotas = useSelector((state) => state.alltareas)
-    var allfiltro = useSelector((state) => state.allfiltro)
-
-    function handleInputChange(e) {
-        e.preventDefault();
+    const allfiltro = useSelector((state) => state.allfiltro)
+    const guardado = useSelector((state) => state.lst)
+    //----------------------2-------------------------------
+    const eliminarTarea = id => {
+        dispatch(eliminar(id));
+        setshow(true);
+    }
+    ////**************************************************** */
+    function handleSearchChange(e) {
         setSearchValuetName(e.target.value);
     }
-
     //--------------------------------------------------------------------   
     function handleEstado(e) {
-   
         dispatch(filtrarestado(e.target.value))
         setshow(true)
     }
     //--------------------------------------------------------------------   
     function handleCategory(e) {
-    
         e.preventDefault();
         dispatch(filtrarC(e.target.value))
         setshow(true)
-    }
-    //--------------------------------------------------------------------   
-    const agregarTarea = tarea => {
-        if (tarea.texto.trim()) {
-            tarea.texto = tarea.texto.trim();
-            const tareasActualizadas = [tarea, ...tareas];
-            setTareas(tareasActualizadas);
-            dispatch(agregartareas(tareasActualizadas))
-            setComple("")
-        }
     }
     //--------------------------------------------------------------------
     const editarTarea = (editinput, id) => {
         dispatch(editarT(editinput, id))
     }
-    //--------------------------------------------------------------------
-    const eliminarTarea = id => {
-        dispatch(eliminar(id))
-        setshow(true)
-    }
-    //--------------------------------------------------------------------
+    //--------------------------------------------------------------------   
     const completarTarea = id => {
         dispatch(complet(id))
-        // const tareasActualizadas = tareas.map(tarea => {
-        //     if (tarea.id === id) {
-        //       tarea.completada = !tarea.completada;
-        //     }
-        //     return tarea;
-        //   });
-         // setComple(tareasActualizadas);//***********
-        }
-    
+    }
     //--------------------------------------------------------------------   
     function handleBuscar(e) {
         e.preventDefault();
@@ -108,13 +71,56 @@ export default function ListaDeTareas() {
     //--------------------------------------------------------------------   
     function handleReset(e) {
         e.preventDefault();
-        setTareas(allnotas)
         setshow(false)
     }
 
     const categoria = ["Prioridad alta", "Prioridad media", "Prioridad baja"];
     const estado = ["Finalizado", "Pendiente",];
 
+    const tareasList = guardado.map((event) => (
+        <Tareas
+            key={event.id}
+            id={event.id}
+            name={event.name}
+            texto={event.texto}
+            estado={event.estado}
+            completarTarea={completarTarea}
+            eliminarTarea={eliminarTarea}
+            editarTarea={editarTarea}
+        />
+    ));
+
+    const Efiltro = allfiltro.map((e) => (
+        //{  return (
+        <Tareas
+            key={e.id}
+            id={e.id}
+            name={e.name}
+            texto={e.texto}
+            estado={e.estado}
+            completarTarea={completarTarea}
+            eliminarTarea={eliminarTarea}
+            editarTarea={editarTarea}
+        />
+    )
+        //}
+    )
+
+    const Notas = allnotas.map((e) => (
+        //{return (
+        <Tareas
+            key={e.id}
+            id={e.id}
+            name={e.name}
+            texto={e.texto}
+            estado={e.estado}
+            completarTarea={completarTarea}
+            eliminarTarea={eliminarTarea}
+            editarTarea={editarTarea}
+        />
+    )
+        //}
+    )
     return (
         <>
             <Create onSubmit={agregarTarea} />
@@ -126,7 +132,6 @@ export default function ListaDeTareas() {
                     <br /><br />
                     <div>
                         <FormControl variant="outlined" component="form" fullWidth sx={{ maxWidth: 200 }}   >
-
                             <InputLabel id="demo-simple-select-label">Estado</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -176,47 +181,21 @@ export default function ListaDeTareas() {
                             noValidate
                             autoComplete="off"
                         >
-                            <TextField id="standard-basic" label="Buscar" variant="standard" value={searchValue} onChange={(e) => handleInputChange(e)} type="text" />
+                            <TextField id="standard-basic" label="Buscar" variant="standard" value={searchValue} onChange={(e) => handleSearchChange(e)} type="text" />
                             <Button onClick={(e) => handleBuscar(e)} >buscar</Button>
                         </Box>
                     </div>
                 </div>
                 <div className={style.container}>
-
                     {allfiltro.length > 0 && show === true ?
-                        allfiltro.map((country, index) => {
-                            return (
-                                <Tareas
-                                    key={country.id}
-                                    id={country.id}
-                                    name={country.name}
-                                    texto={country.texto}
-                                    estado={country.estado}
-                                    completarTarea={completarTarea}
-                                    eliminarTarea={eliminarTarea}
-                                    editarTarea={editarTarea}
-                                />
-                            )
-                        }
-                        ) : allfiltro.length === 0 && show === true ? (
-                            <p style={{ fontSize: "10px", color: "red" }}>No se encontró nada</p>
-
-                        ) : (
-                            allnotas.map((country, index) => {
-                                return (
-
-                                    <Tareas
-                                        key={country.id}
-                                        id={country.id}
-                                        name={country.name}
-                                        texto={country.texto}
-                                        estado={country.estado}
-                                        completarTarea={completarTarea}
-                                        eliminarTarea={eliminarTarea}
-                                        editarTarea={editarTarea}
-                                    />
-                                )
-                            }))
+                        Efiltro
+                        : allfiltro.length === 0 && show === true ?
+                            (<p style={{ fontSize: "10px", color: "red" }}>No se encontró nada</p>) :
+                            allfiltro.length === 0 && show === false ?
+                                tareasList
+                                : allnotas.length >= 1 ?
+                                    Notas
+                                    : (<p style={{ fontSize: "10px", color: "red" }}>No hay nada para mostrar</p>)
                     }
                 </div>
             </div>
