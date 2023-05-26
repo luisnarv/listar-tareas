@@ -40,7 +40,7 @@ export default function Tareas({ id, name, texto, completarTarea, eliminarTarea,
     return (
         <div className={estado === true ? style.container : style.sinc}>
             <div>
-                 <div>
+                <div>
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -51,27 +51,27 @@ export default function Tareas({ id, name, texto, completarTarea, eliminarTarea,
                             <Typography id="modal-modal-title" variant="h6" component="h2">
                                 <h1> Editar Tarea</h1>
                             </Typography>
-                            <Typography id="modal-modal-description" sx={{ mt: 1, width: '30ch'  }}>
-                            <TextField id="outlined-basic" label="Editar" type="text" value={editinput.textos} onChange={handleInputChange} variant="outlined" />
-                                <Button onClick={(e)=> {editarTarea(editinput, id); handleClose(e)} } > Guardar</Button>
+                            <Typography id="modal-modal-description" sx={{ mt: 1, width: '30ch' }}>
+                                <TextField id="outlined-basic" label="Editar" type="text" value={editinput.textos} onChange={handleInputChange} variant="outlined" />
+                                <Button onClick={(e) => { editarTarea(editinput, id); handleClose(e) }} > Guardar</Button>
                             </Typography>
                         </Box>
-                    </Modal> 
+                    </Modal>
                 </div>
-                  <div
+                <div
                     className={style.tarea}
                     onClick={() => completarTarea(id)} >
                     <p>Nombre: {name}</p> <p>Nota: {texto}</p>
-                </div>  
-                  <div>
-                <IconButton onClick={() => eliminarTarea(id)} aria-label="fingerprint" color="secondary">
-                   <DeleteForeverIcon />  <p>Eliminar</p>
-                </IconButton> 
-                 <IconButton onClick={handleOpen} aria-label="fingerprint" color="primary" fontSize="small" >
-                <ModeEditIcon />  <p  >Editar</p>
-            </IconButton>  
-                </div>  
-            </div> 
+                </div>
+                <div>
+                    <IconButton onClick={() => eliminarTarea(id)} aria-label="fingerprint" color="secondary">
+                        <DeleteForeverIcon />  <p>Eliminar</p>
+                    </IconButton>
+                    <IconButton onClick={handleOpen} aria-label="fingerprint" color="primary" fontSize="small" >
+                        <ModeEditIcon />  <p  >Editar</p>
+                    </IconButton>
+                </div>
+            </div>
         </div>
     );
 }
