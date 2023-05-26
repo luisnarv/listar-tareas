@@ -14,7 +14,7 @@ function rootReducer(state = initialState, action) {
   switch (action.type) {
     /*------------------------Agreagar_tarea---------------------- */
     case 'AGREGAR_TAREA':
-      if (state.contador === 1) {
+      if (state.contador === 1 && state.lst) {
         { state.alltareas = state.lst }
       }
       const Notas = [...state.alltareas, action.payload]
@@ -77,6 +77,7 @@ function rootReducer(state = initialState, action) {
         }
       } else {
         const eliminartarea = state.lst.filter(tarea => tarea.id !== idtarea)
+        localStorage.setItem('tareas', JSON.stringify(eliminartarea));
         return {
           ...state,
           alltareas: eliminartarea,

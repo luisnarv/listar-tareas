@@ -32,7 +32,7 @@ export default function ListaDeTareas() {
     }
     const allnotas = useSelector((state) => state.alltareas)
     const allfiltro = useSelector((state) => state.allfiltro)
-    const guardado = useSelector((state) => state.lst)
+    const guardado = useSelector((state) =>  !state.lst ? "": state.lst )
     //----------------------2-------------------------------
     const eliminarTarea = id => {
         dispatch(eliminar(id));
@@ -77,7 +77,9 @@ export default function ListaDeTareas() {
     const categoria = ["Prioridad alta", "Prioridad media", "Prioridad baja"];
     const estado = ["Finalizado", "Pendiente",];
 
-    const tareasList = guardado.map((event) => (
+    // const tareasList = undefined
+  if (guardado){
+    var tareasList = guardado.map((event) => (
         <Tareas
             key={event.id}
             id={event.id}
@@ -89,6 +91,19 @@ export default function ListaDeTareas() {
             editarTarea={editarTarea}
         />
     ));
+  }
+    // const tareasList = guardado.map((event) => (
+    //     <Tareas
+    //         key={event.id}
+    //         id={event.id}
+    //         name={event.name}
+    //         texto={event.texto}
+    //         estado={event.estado}
+    //         completarTarea={completarTarea}
+    //         eliminarTarea={eliminarTarea}
+    //         editarTarea={editarTarea}
+    //     />
+    // ));
 
     const Efiltro = allfiltro.map((e) => (
         //{  return (
@@ -107,7 +122,6 @@ export default function ListaDeTareas() {
     )
 
     const Notas = allnotas.map((e) => (
-        //{return (
         <Tareas
             key={e.id}
             id={e.id}
@@ -119,8 +133,9 @@ export default function ListaDeTareas() {
             editarTarea={editarTarea}
         />
     )
-        //}
     )
+
+   
     return (
         <>
             <Create onSubmit={agregarTarea} />
@@ -187,15 +202,19 @@ export default function ListaDeTareas() {
                     </div>
                 </div>
                 <div className={style.container}>
-                    {allfiltro.length > 0 && show === true ?
-                        Efiltro
-                        : allfiltro.length === 0 && show === true ?
-                            (<p style={{ fontSize: "10px", color: "red" }}>No se encontró nada</p>) :
-                            allfiltro.length === 0 && show === false ?
-                                tareasList
-                                : allnotas.length >= 1 ?
-                                    Notas
-                                    : (<p style={{ fontSize: "10px", color: "red" }}>No hay nada para mostrar</p>)
+                    {allfiltro.length > 0 && show === true ?(
+                        Efiltro)
+                        : allfiltro.length === 0 && show === true ?(
+                            <p style={{ fontSize: "10px", color: "red" }}>No se encontró nada</p>) 
+                            : allfiltro.length === 0 && show === false ?(
+                                tareasList)
+                                : allnotas.length >= 1 ?(
+                                    Notas)
+                                    : (
+                     
+                                
+            <p style={{ fontSize: "10px", color: "red" }}>No hay nada para mostrar</p>)
+                                                           
                     }
                 </div>
             </div>
