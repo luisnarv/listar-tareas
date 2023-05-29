@@ -36,7 +36,7 @@ export default function ListaDeTareas() {
     //----------------------2-------------------------------
     const eliminarTarea = id => {
         dispatch(eliminar(id));
-        setshow(true);
+      //  setshow(true);
     }
     ////**************************************************** */
     function handleSearchChange(e) {
@@ -92,18 +92,6 @@ export default function ListaDeTareas() {
         />
     ));
   }
-    // const tareasList = guardado.map((event) => (
-    //     <Tareas
-    //         key={event.id}
-    //         id={event.id}
-    //         name={event.name}
-    //         texto={event.texto}
-    //         estado={event.estado}
-    //         completarTarea={completarTarea}
-    //         eliminarTarea={eliminarTarea}
-    //         editarTarea={editarTarea}
-    //     />
-    // ));
 
     const Efiltro = allfiltro.map((e) => (
         //{  return (
